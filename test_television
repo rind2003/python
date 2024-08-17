@@ -48,7 +48,7 @@ class Test:
         
     def test_channel_down(self): 
         self.tvl.channel_down()
-        assert str(self.tv)l == 'Power: Off, Channel: 0, Volume: 0'
+        assert str(self.tvl) == 'Power: Off, Channel: 0, Volume: 0'
 
 
         self.tvl.power()
