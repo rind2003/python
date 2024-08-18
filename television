@@ -4,46 +4,81 @@ class Television:
     MIN_CHANNEL = 0
     MAX_CHANNEL = 3
 
-def __init__(self):
-    self.__status = False
-    self.__muted = False
-    self.__volume = Television.MIN_VOLUME
-    self.__channel = Television.MIN_VOLUME
-
-def power(self):
-    self.__status = not self.__status
-
-def mute(self):
-    if self.__status:
-        self.__muted = not self.__muted
-
-def channel_up(self):
-    if self.__status:
-        if self.__channel < Television.MAX_CHANNEL:
-            self.__channel += 1
-        else:
-            self.__channel = Television.MIN_CHANNEL
-
-def channel_down(self):
-    if self.__status:
-        if self.__channel > Television.MIN_CHANNEL:
-            self.__channel -= 1
-        else:
-            self.__channel = Television.MAX_CHANNEL
-
-def volume_up(self):
-    if self.__status:
+    def __init__(self) -> None:
+        """
+        Initialize the Television with default settings:
+        - Power is off
+        - Volume is at the minimum level
+        - Channel is set to the minimum channel
+        - Mute is off
+        """
+        self.__status = False
         self.__muted = False
-        if self.__volume < Television.MAX_VOLUME:
-            self.__volume += 1
+        self.__volume = Television.MIN_VOLUME
+        self.__channel = Television.MIN_CHANNEL
 
-def volume_down(self):
-    if self.__status:
-        self.__muted = False
-        if self.__volume > Television.MIN_VOLUME:
-            self.__volume -= 1
+    def power(self) -> None:
+        """
+        Turn the television on or off.
+        If the television is on, it will be turned off, and vice versa.
+        """
+        self.__status = not self.__status
 
-def __str__(self):
-    volume_display = Television.MIN_VOLUME if self.__muted else self.__volume
-    status = "On" if self.__status else "Off"
-    return f"Power: {status}, Channel: {self.__channel}, Volume: {volume_display}"
+    def mute(self) -> None:
+        """
+        Turn the mute button on or off. If muting, set volume to minimum.
+        Unmuting does not affect the current volume level.
+        """
+        if self.__status:
+            self.__muted = not self.__muted
+            if self.__muted:
+                self.__volume = Television.MIN_VOLUME
+
+    def channel_up(self) -> None:
+        """
+        Increase the channel by 1. If the highest channel is reached, go back to the lowest channel.
+        """
+        if self.__status:
+            self.__channel = (self.__channel + 1) % (Television.MAX_CHANNEL + 1)
+
+    def channel_down(self) -> None:
+        """
+        Decrease the channel by 1. If the lowest channel is reached, go to the highest channel.
+        """
+        if self.__status:
+            self.__channel = (self.__channel - 1) % (Television.MAX_CHANNEL + 1)
+
+    def volume_up(self) -> None:
+        """
+        Increase the volume by 1 if the television is on and not muted. 
+        The volume will not exceed the maximum level.
+        """
+        if self.__status and not self.__muted:
+            if self.__volume < Television.MAX_VOLUME:
+                self.__volume += 1
+
+    def volume_down(self) -> None:
+        """
+        Decrease the volume by 1 if the television is on and not muted. 
+        The volume will not go below the minimum level.
+        """
+        if self.__status and not self.__muted:
+            if self.__volume > Television.MIN_VOLUME:
+                self.__volume -= 1
+
+    def __str__(self) -> str:
+        """
+        Return the current status of the television, including power, channel, and volume (considering mute).
+
+        Returns:
+            str: A formatted string displaying the power status, channel, and volume level.
+        """
+        volume_display = Television.MIN_VOLUME if self.__muted else self.__volume
+        status = "On" if self.__status else "Off"
+        return f"Power: {status}, Channel: {self.__channel}, Volume: {volume_display}"
+
+
+
+
+
+
